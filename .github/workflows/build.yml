@@ -33,12 +33,22 @@ jobs:
 
       - name: Verify binary
         run: |
-          # Check if file exists and is executable
+          # Check if file exists
           ls -la snmpwalk
           file snmpwalk
           
-          # Test running the binary
-          docker run --rm -v ${{ github.workspace }}/snmpwalk:/snmpwalk alpine:3.19 sh -c "apk add --no-cache file && ldd /snmpwalk"
+          # For static binaries, ldd shows "Not a valid dynamic program" which is expected
+          # Just verify the binary is marked as "statically linked" in the file output
+          if file snmpwalk | grep -q "statically linked"; then
+            echo "Binary is statically linked - OK"
+          else
+            echo "Binary may not be fully static"
+            exit 1
+          fi
+
+      - name: Test binary execution
+        run: |
+          docker run --rm snmpwalk-static:latest -h 2>&1 | head -5
 
       - name: Upload binary artifact
         uses: actions/upload-artifact@v7
