@@ -5,6 +5,11 @@ on:
     tags:
       - '*'
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'net-snmp version (e.g., v5.9.5.2)'
+        required: true
+        default: 'v5.9.5.2'
 
 jobs:
   build:
@@ -25,7 +30,7 @@ jobs:
           tags: snmpwalk-static:latest
           load: true
           build-args: |
-            NET_SNMP_VERSION=${{ github.ref_name }}
+            NET_SNMP_VERSION=${{ github.event.inputs.version || github.ref_name || 'v5.9.5.2' }}
 
       - name: Extract binary
         run: |
