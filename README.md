@@ -18,7 +18,11 @@ net-snmp 5.9.5.2
 ### Build
 
 ```bash
+# Default version (v5.9.5.2)
 docker build -t snmpwalk-static .
+
+# Custom version
+docker build --build-arg NET_SNMP_VERSION=v5.9.4 -t snmpwalk-static .
 ```
 
 ### Extract Binary

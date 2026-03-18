@@ -24,6 +24,8 @@ jobs:
           push: false
           tags: snmpwalk-static:latest
           load: true
+          build-args: |
+            NET_SNMP_VERSION=${{ github.ref_name }}
 
       - name: Extract binary
         run: |

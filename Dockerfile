@@ -1,6 +1,9 @@
 # Dockerfile to build a static snmpwalk binary with DES support
 FROM alpine:3.19 AS builder
 
+# Argument for net-snmp version (can be overridden with --build-arg)
+ARG NET_SNMP_VERSION=v5.9.5.2
+
 # Install build dependencies
 RUN apk add --no-cache \
     build-base \
@@ -18,7 +21,7 @@ RUN apk add --no-cache \
     git
 
 # Clone net-snmp source from GitHub
-RUN git clone --branch v5.9.5.2 --depth 1 https://github.com/net-snmp/net-snmp.git /build/net-snmp
+RUN git clone --branch ${NET_SNMP_VERSION} --depth 1 https://github.com/net-snmp/net-snmp.git /build/net-snmp
 
 # Generate configure script using autoreconf
 WORKDIR /build/net-snmp
