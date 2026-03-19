@@ -1,5 +1,5 @@
 # Dockerfile to build a static snmpwalk binary with DES support
-FROM alpine:3.19 AS builder
+FROM alpine:3.23 AS builder
 
 # Argument for net-snmp version (can be overridden with --build-arg)
 ARG NET_SNMP_VERSION=v5.9.5.2
